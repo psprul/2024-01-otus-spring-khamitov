@@ -6,10 +6,12 @@ import ru.otus.hw.config.TestFileNameProvider;
 import ru.otus.hw.dao.dto.QuestionDto;
 import ru.otus.hw.domain.Question;
 import ru.otus.hw.exceptions.QuestionReadException;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class CsvQuestionDao implements QuestionDao {
@@ -24,14 +26,14 @@ public class CsvQuestionDao implements QuestionDao {
         // Про ресурсы: https://mkyong.com/java/java-read-a-file-from-resources-folder/
 
         List<QuestionDto> questionDtoList = null;
-        try {
-            questionDtoList = new CsvToBeanBuilder<QuestionDto>(new FileReader(fileNameProvider.getTestFileName()))
+        try(FileReader fileReader = new FileReader(new File(Objects.requireNonNull(getClass().getClassLoader().getResource(fileNameProvider.getTestFileName())).toURI()))) {
+            questionDtoList = new CsvToBeanBuilder<QuestionDto>(fileReader)
                     .withType(QuestionDto.class)
                     .withSkipLines(1)
                     .withSeparator(';')
                     .build()
                     .parse();
-        } catch (IllegalStateException | FileNotFoundException e) {
+        } catch (IllegalStateException | URISyntaxException | IOException e) {
             throw new QuestionReadException("Error = ",e);
         }
 

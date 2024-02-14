@@ -19,9 +19,9 @@ public class TestServiceImpl implements TestService {
         ioService.printFormattedLine("Please answer the questions below%n");
         // Получить вопросы из дао и вывести их с вариантами ответов
         for (Question question : questionDao.findAll()) {
-            ioService.printFormattedLine("Question = %s", new Object[]{question.text()});
+            ioService.printFormattedLine("Question = %s", question.text());
             for (Answer answer : question.answers()) {
-                ioService.printFormattedLine("Answer = %s , isCorrect = %b", answer.text(), answer.isCorrect());
+                ioService.printFormattedLine("%s answer = %s , isCorrect = %b",question.answers().indexOf(answer)+1, answer.text(), answer.isCorrect());
             }
             ioService.printLine("");
         }
