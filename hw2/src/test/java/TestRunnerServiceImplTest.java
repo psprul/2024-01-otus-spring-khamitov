@@ -6,7 +6,7 @@ import ru.otus.hw.service.*;
 public class TestRunnerServiceImplTest {
     @Test
     void Test(){
-        
+
         TestRunnerServiceImpl testRunnerService = new TestRunnerServiceImpl(
                 new TestService() {
                     @Override
