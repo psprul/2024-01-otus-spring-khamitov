@@ -28,7 +28,7 @@ public class TestServiceImpl implements TestService {
             for (Answer answer : question.answers()) {
                 ioService.printFormattedLine("%s answer = %s",question.answers().indexOf(answer) + 1,answer.text());
             }
-            answerNumber = ioService.readIntForRange(1,3, "Enter a value from 1 to 3");
+            answerNumber = ioService.readIntForRange(1,question.answers().size(), "Enter a value from 1 to " + question.answers().size());
             testResult.applyAnswer(question, question.answers().get(answerNumber - 1).isCorrect());
             ioService.printLine("");
         }
