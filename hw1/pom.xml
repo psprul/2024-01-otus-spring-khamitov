@@ -8,7 +8,13 @@
     <groupId>ru.otus.hw</groupId>
     <artifactId>hw01-xml-config</artifactId>
     <version>1.0</version>
-    
+
+    <parent>
+        <groupId>ru.otus.hw</groupId>
+        <artifactId>2024-01-otus-spring-khamitov</artifactId>
+        <version>1.0</version>
+    </parent>
+
 
     <properties>
         <maven.compiler.target>17</maven.compiler.target>
