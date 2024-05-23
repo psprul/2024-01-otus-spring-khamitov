@@ -121,7 +121,8 @@
     </build>
 
     <modules>
-        <module>hw01-xml-config</module>
-        <module>hw02-annotation-config</module>
+        <module>hw1</module>
+        <module>hw2</module>
+        <module>hw3</module>
     </modules>
 </project>
