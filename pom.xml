@@ -10,10 +10,6 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>hw01-xml-config</module>
-    </modules>
-
     <properties>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
@@ -123,4 +119,9 @@
             </plugin>
         </plugins>
     </build>
+
+    <modules>
+        <module>hw01-xml-config</module>
+        <module>hw02-annotation-config</module>
+    </modules>
 </project>
