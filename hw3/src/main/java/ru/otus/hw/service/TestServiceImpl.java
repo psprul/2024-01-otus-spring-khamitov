@@ -28,9 +28,11 @@ public class TestServiceImpl implements TestService {
         for (var question: questions) {
             ioService.printFormattedLine(ioService.getMessage("TestService.question"),question.text());
             for (Answer answer : question.answers()) {
-                ioService.printFormattedLine(ioService.getMessage("TestService.answer"),question.answers().indexOf(answer) + 1,answer.text());
+                ioService.printFormattedLine(ioService.getMessage("TestService.answer")
+                        ,question.answers().indexOf(answer) + 1,answer.text());
             }
-            answerNumber = ioService.readIntForRange(1,question.answers().size(), ioService.getMessage("TestService.answer.check.number",question.answers().size()));
+            answerNumber = ioService.readIntForRange(1,question.answers().size()
+                    , ioService.getMessage("TestService.answer.check.number",question.answers().size()));
             testResult.applyAnswer(question, question.answers().get(answerNumber - 1).isCorrect());
             ioService.printLine("");
         }
