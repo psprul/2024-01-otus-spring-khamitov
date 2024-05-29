@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.hw.config.AppProperties;
 import ru.otus.hw.dao.CsvQuestionDao;
 import ru.otus.hw.dao.QuestionDao;
@@ -9,7 +8,7 @@ import ru.otus.hw.dao.QuestionDao;
 import static org.assertj.core.api.Assertions.assertThatList;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest(classes = {CsvQuestionDaoTest.class})
 public class CsvQuestionDaoTest {
     @Mock
     private AppProperties appProperties;
