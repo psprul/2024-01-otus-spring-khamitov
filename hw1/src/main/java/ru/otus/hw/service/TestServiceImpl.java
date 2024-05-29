@@ -21,7 +21,8 @@ public class TestServiceImpl implements TestService {
         for (Question question : questionDao.findAll()) {
             ioService.printFormattedLine("Question = %s", question.text());
             for (Answer answer : question.answers()) {
-                ioService.printFormattedLine("%s answer = %s , isCorrect = %b",question.answers().indexOf(answer)+1, answer.text(), answer.isCorrect());
+                ioService.printFormattedLine("%s answer = %s , isCorrect = %b",
+                        question.answers().indexOf(answer) + 1, answer.text(), answer.isCorrect());
             }
             ioService.printLine("");
         }
