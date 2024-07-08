@@ -4,8 +4,10 @@ import com.example.hw5.entity.Book;
 import com.example.hw5.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,32 +26,29 @@ public class BookServiceImpl implements BookService {
         } else throw new IllegalArgumentException("Книга с именем " + book.getName() + " уже существует");
     }
 
-    public void insertBook(String name, Long authorId, Long genreId) {
+    public Book insertBook(String name, Long authorId, Long genreId) {
         Book book = new Book();
         book.setName(name);
-        book.setAuthor(authorService.findById(authorId));
-        book.setGenre(genreService.findById(genreId));
-        insertOrUpdateWithCheck(book);
+        book.setAuthor(authorService.findById(authorId).orElseThrow(() -> new NotFoundException("Не найден автор с id = " + authorId)));
+        book.setGenre(genreService.findById(genreId).orElseThrow(() -> new NotFoundException("Не найден жанр с id = " + genreId)));
+        if (bookRepository.hasBookByName(book.getName()) > 0) throw new IllegalArgumentException("Книга с именем " + book.getName() + " уже существует");
+        return bookRepository.save(book);
     }
 
-    public void updateBook(Long id, String name, Long authorId, Long genreId) {
+    public Book updateBook(Long id, String name, Long authorId, Long genreId) {
         Book book;
-        book = findById(id);
+        book = findById(id).orElseThrow(() -> new NotFoundException("Не найдена книга с id = " + id));
         book.setName(name);
-        book.setAuthor(authorService.findById(authorId));
-        book.setGenre(genreService.findById(genreId));
-        insertOrUpdateWithCheck(book);
+        book.setAuthor(authorService.findById(authorId).orElseThrow(() -> new NotFoundException("Не найден автор с id = " + id)));
+        book.setGenre(genreService.findById(genreId).orElseThrow(() -> new NotFoundException("Не найден жанр с id = " + id)));
+        return bookRepository.save(book);
     }
 
-    private Book findById(Long id) {
-        try {
-            return bookRepository.findById(id);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Не найдена книга с id = " + id);
-        }
+    public Optional<Book> findById(Long id) {
+        return bookRepository.findById(id);
     }
 
     public void deleteById(Long id) {
-        bookRepository.deleteById(findById(id).getId());
+        bookRepository.deleteById(findById(id).orElseThrow(() -> new NotFoundException("Не найдена книга с id = " + id)).getId());
     }
 }

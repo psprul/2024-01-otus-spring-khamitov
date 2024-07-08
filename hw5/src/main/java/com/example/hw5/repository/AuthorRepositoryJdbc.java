@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class AuthorRepositoryJdbc implements AuthorRepository {
                 "SELECT a.* FROM authors a" , new BeanPropertyRowMapper<>(Author.class));
     }
 
-    public Integer hasAuthorByAuthorName(String authorName) {
+    public Integer countByName(String authorName) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue(AUTHOR_NAME, authorName);
         return namedParameterJdbcOperations.queryForObject("""
@@ -32,17 +33,18 @@ public class AuthorRepositoryJdbc implements AuthorRepository {
                 , mapSqlParameterSource, Integer.class);
     }
 
-    public Author findById(Long id) {
+    public Optional<Author> findById(Long id) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id" , id);
-        return namedParameterJdbcOperations.queryForObject("""
+        List<Author> authorList = namedParameterJdbcOperations.query("""
                         SELECT a.id id, a.author_name authorName
                           FROM authors a
                          where a.id = :id"""
                 , mapSqlParameterSource, new BeanPropertyRowMapper<>(Author.class));
+        return authorList.size() == 1 ? Optional.of(authorList.get(0)) : Optional.empty();
     }
 
-    public void save(Author author) {
+    public Author save(Author author) {
         if (author.getId() == null) {
             var keyHolder = new GeneratedKeyHolder();
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
@@ -58,5 +60,6 @@ public class AuthorRepositoryJdbc implements AuthorRepository {
                     "UPDATE authors SET author_name = :authorName WHERE id = :id" ,
                     Map.of("id" , author.getId(), AUTHOR_NAME, author.getAuthorName()));
         }
+        return author;
     }
 }

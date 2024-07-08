@@ -1,5 +1,8 @@
-insert into authors(author_name) values ('Пушкин А.С.');
-insert into authors(author_name) values ('Некрасов Н.А.');
-insert into genres(name) values ('Роман');
-insert into genres(name) values ('Test');
-insert into books(name, author_id, genre_id) values ('Капитанская дочка', 1, 1);
+insert into authors(author_name)
+values ('Author_1'), ('Author_2'), ('Author_3');
+
+insert into genres(name)
+values ('Genre_1'), ('Genre_2'), ('Genre_3');
+
+insert into books(name, author_id, genre_id)
+values ('BookTitle_1', 1, 1), ('BookTitle_2', 2, 2), ('BookTitle_3', 3, 3);

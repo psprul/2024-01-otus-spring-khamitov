@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -32,14 +33,15 @@ public class GenreRepositoryJdbc implements GenreRepository {
                 , mapSqlParameterSource, Integer.class);
     }
 
-    public Genre findById(Long id) {
+    public Optional<Genre> findById(Long id) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id" , id);
-        return namedParameterJdbcOperations.queryForObject("""
+        List<Genre> genreList = namedParameterJdbcOperations.query("""
                         SELECT a.id id, a.name name
                           FROM genres a
                          where a.id = :id"""
                 , mapSqlParameterSource, new BeanPropertyRowMapper<>(Genre.class));
+        return genreList.size() == 1 ? Optional.of(genreList.get(0)) : Optional.empty();
     }
 
     public void save(Genre genre) {

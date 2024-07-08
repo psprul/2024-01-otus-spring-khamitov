@@ -3,6 +3,7 @@ package com.example.hw5.services;
 import com.example.hw5.entity.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorService {
     void insertAuthor(String authorName);
@@ -11,5 +12,5 @@ public interface AuthorService {
 
     List<Author> showAuthors();
 
-    Author findById(Long id);
+    Optional<Author> findById(Long id);
 }

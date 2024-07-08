@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -39,19 +40,20 @@ public class BookRepositoryJdbc implements BookRepository {
                 , mapSqlParameterSource, Integer.class);
     }
 
-    public Book findById(Long id) {
+    public Optional<Book> findById(Long id) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id" , id);
-        return namedParameterJdbcOperations.queryForObject("""
+        List<Book> bookList = namedParameterJdbcOperations.query("""
                         SELECT b.id, b.name, a.id, a.author_name, g.id, g.name
                         FROM books b
                         INNER JOIN genres g ON b.genre_id = g.id
                         INNER JOIN authors a ON b.author_id = a.id
                         where b.id = :id"""
                 , mapSqlParameterSource, new BookRowMapper());
+        return bookList.size() == 1 ? Optional.of(bookList.get(0)) : Optional.empty();
     }
 
-    public void save(Book book) {
+    public Book save(Book book) {
         if (book.getId() == null) {
             var keyHolder = new GeneratedKeyHolder();
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
@@ -71,6 +73,7 @@ public class BookRepositoryJdbc implements BookRepository {
                              WHERE id = :id""",
                     Map.of("id" , book.getId(), NAME, book.getName(), "authorId" , book.getAuthor().getId(), "genreId" , book.getGenre().getId()));
         }
+        return book;
     }
 
     public void deleteById(long id) {

@@ -3,13 +3,14 @@ package com.example.hw5.repository;
 import com.example.hw5.entity.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorRepository {
-    Author findById(Long id);
+    Optional<Author> findById(Long id);
 
-    Integer hasAuthorByAuthorName(String authorName);
+    Integer countByName(String authorName);
 
     List<Author> findAll();
 
-    void save(Author author);
+    Author save(Author author);
 }

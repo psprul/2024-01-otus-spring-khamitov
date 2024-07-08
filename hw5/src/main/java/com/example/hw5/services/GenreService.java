@@ -3,6 +3,7 @@ package com.example.hw5.services;
 import com.example.hw5.entity.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenreService {
     void insertGenre(String name);
@@ -11,5 +12,5 @@ public interface GenreService {
 
     List<Genre> showGenres();
 
-    Genre findById(Long id);
+    Optional<Genre> findById(Long id);
 }
